@@ -1,0 +1,5 @@
+﻿PublishPageIntent Publish page
+PublishPageIntent please publish the {PageID}
+PublishPageIntent Publish page {PageID}
+AMAZON.HelpIntent assistance
+AMAZON.HelpIntent need help
