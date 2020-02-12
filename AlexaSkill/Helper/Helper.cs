@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
@@ -10,7 +11,7 @@ namespace AlexaSkill.Helper
     public static class Helper
     {
         private static SessionAwareCoreServiceClient _client;
-       
+
         public static SessionAwareCoreServiceClient Client
         {
             get
@@ -27,7 +28,7 @@ namespace AlexaSkill.Helper
 
                     string username = ConfigurationManager.AppSettings["TridionUsername"];
                     string password = ConfigurationManager.AppSettings["TridionPassword"];
-                    
+
 
                     if (!String.IsNullOrEmpty(username) && !String.IsNullOrEmpty(password))
                     {
@@ -37,26 +38,39 @@ namespace AlexaSkill.Helper
                 return _client;
             }
         }
-       
+
         public static string PublishPage(string pageTitle)
         {
             try
             {
-             string id = GetAllPages().Where(x => x != null && x.Title.ToLower().Contains(pageTitle.ToLower())).Select(x=>x.Id).ToList()[0];
-                // Publish the page
-                string[] pageUris = { id };
-                string destinationTarget = ConfigurationManager.AppSettings["PublishTargetIdStaging"];
-                string[] destinationTargetUris = { destinationTarget };
-                var publishInstruction = new PublishInstructionData
+                List<string> ids = GetAllPages().Where(x => x != null && x.Title.ToLower().Equals(pageTitle.ToLower())).Select(x => x.Id).ToList();
+                if (ids.Count == 1)
                 {
-                    RenderInstruction = new RenderInstructionData(),
-                    ResolveInstruction = new ResolveInstructionData()
-                };
-                PublishTransactionData[] publishTransactions = Client.Publish(pageUris, publishInstruction,
-                                                                                destinationTargetUris, PublishPriority.Normal,
-                                                                                new ReadOptions());
-                Console.WriteLine("Published page; transaction id: " + publishTransactions[0].Id);
-                return pageTitle;
+                    string[] pageUris = { ids[0] };
+                    string destinationTarget = ConfigurationManager.AppSettings["PublishTargetIdStaging"];
+                    string[] destinationTargetUris = { destinationTarget };
+                    var publishInstruction = new PublishInstructionData
+                    {
+                        RenderInstruction = new RenderInstructionData(),
+                        ResolveInstruction = new ResolveInstructionData()
+                    };
+                    PublishTransactionData[] publishTransactions = Client.Publish(pageUris, publishInstruction,
+                                                                                    destinationTargetUris, PublishPriority.Normal,
+                                                                                    new ReadOptions());
+                    Console.WriteLine("Published page; transaction id: " + publishTransactions[0].Id);
+                    // return pageTitle;
+                    return string.Format("The page {0} has been sent to the publishing queue", pageTitle);
+                }
+                else
+                {
+                    ids = GetAllPages().Where(x => x != null && x.Title.ToLower().Contains(pageTitle.ToLower())).Select(x => x.Id).ToList();
+                    if (ids.Count == 0)
+                    {
+                        return "Alexa doesn't found any matching page in CMS";
+                    }
+                    var pages = GetAllPages().Where(x => x != null && x.Title.ToLower().Contains(pageTitle.ToLower())).Select(x => x.Title).ToList();
+                    return string.Format("Alexa found {0} pages. Which one you want to publish?", string.Join(",", pages));
+                }
             }
             catch (FaultException<CoreServiceFault> e)
             {
@@ -74,7 +88,7 @@ namespace AlexaSkill.Helper
                 rootSGId,
                 new OrganizationalItemItemsFilterData
                 {
-                    ItemTypes = new[] {ItemType.Page },
+                    ItemTypes = new[] { ItemType.Page },
                     Recursive = false,
                 });
         }

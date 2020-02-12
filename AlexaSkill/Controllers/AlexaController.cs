@@ -37,9 +37,9 @@ namespace AlexaSkill.Controllers
         }
         private AlexaResponse PublishPageIntentHandler(dynamic slots)
         {
-              string output = Helper.Helper.PublishPage(string.Format("{0}",slots["PageID"].value));
-          //  string output = Helper.Helper.PublishPage("010 Federal Student Loans");
-            var response = new AlexaResponse("The "+ output+ " has been published ");
+            string output = Helper.Helper.PublishPage(string.Format("{0}", slots["PageID"].value));
+            //  string output = Helper.Helper.PublishPage("010 Federal Student Loans");
+            var response = new AlexaResponse(output);
             response.Response.Reprompt.OutputSpeech.Text =
                 "You can tell me to publish the page following the page ID, or cancel to exit.";
             response.Response.ShouldEndSession = false;
@@ -54,7 +54,7 @@ namespace AlexaSkill.Controllers
             {
                 result = string.Join(",", output.Select(x => x.Title).ToArray());
             }
-            var response = new AlexaResponse(string.Format("Here is the list of pages = {0} \n Which page you want to publish?", result),false);
+            var response = new AlexaResponse(string.Format("Here is the list of pages {0} \n Which page you want to publish?", result), false);
             response.Response.ShouldEndSession = false;
             return response;
         }
