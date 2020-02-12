@@ -42,7 +42,7 @@ namespace AlexaSkill.Models
 
             [JsonProperty("user")]
             public UserAttributes User { get; set; }
-
+            
             [JsonProperty("new")]
             public bool New { get; set; }
 
