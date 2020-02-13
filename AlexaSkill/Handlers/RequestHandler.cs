@@ -28,7 +28,7 @@ namespace AlexaSkill.Handlers
         {
             string result = CoreServiceHelper.GetPages();
             result = string.IsNullOrEmpty(result) ? pageNotFound : result;
-            var response = new AlexaResponse(string.Format("Here is the list of pages = {0} \n Which page you want to publish?", result), false);
+            var response = new AlexaResponse(string.Format("Here is the list of pages {0} \n Which page you want to publish?", result), false);
             response.Response.ShouldEndSession = false;
             return response;
         }

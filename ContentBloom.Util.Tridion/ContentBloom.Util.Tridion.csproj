@@ -42,8 +42,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tridion.ContentManager.CoreService.Client">
-      <HintPath>..\packages\SDL.Tridion.ContentManager\Tridion.ContentManager.CoreService.Client.dll</HintPath>
+    <Reference Include="Tridion.ContentManager.CoreService.Client, Version=9.0.0.0, Culture=neutral, PublicKeyToken=ddfc895746e5ee6b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Tridion.ContentManager.CoreService.Client\v4.0_8.5.0.466__ddfc895746e5ee6b\Tridion.ContentManager.CoreService.Client.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
