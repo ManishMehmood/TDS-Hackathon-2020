@@ -6,6 +6,7 @@ namespace AlexaSkill.Handlers
     public class RequestHandler
     {
         const string pageNotFound = "I haven't found any page in the search";
+        const string publicationNotFound = "I haven't found any publication in the search";
         /// <summary>
         /// Handle publishing request
         /// </summary>
@@ -27,8 +28,22 @@ namespace AlexaSkill.Handlers
         public AlexaResponse GetPageListHandler()
         {
             string result = CoreServiceHelper.GetPages();
-            result = string.IsNullOrEmpty(result) ? pageNotFound : result;
-            var response = new AlexaResponse(string.Format("Here is the list of pages {0} \n Which page you want to publish?", result), false);
+            result = string.IsNullOrEmpty(result) ? pageNotFound : string.Format("Here is the list of pages {0} \n Which page you want to publish?", result);
+            var response = new AlexaResponse(result, false);
+            response.Response.ShouldEndSession = false;
+            return response;
+        }
+
+        /// <summary>
+        /// Handle getting publication list
+        /// </summary>
+        /// <param name="slots">Intent slots send by Alexa</param>
+        /// <returns>Alexa Response</returns>
+        public AlexaResponse GetPublicationListHandler(dynamic slots)
+        {
+            string result = CoreServiceHelper.GetPublications(slots);
+            result = string.IsNullOrEmpty(result) ? publicationNotFound : string.Format("Here is the list of publications {0}",result);
+            var response = new AlexaResponse(result, false);
             response.Response.ShouldEndSession = false;
             return response;
         }

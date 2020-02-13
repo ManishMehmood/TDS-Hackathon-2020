@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.ServiceModel;
 using Tridion.ContentManager.CoreService.Client;
@@ -81,5 +82,43 @@ namespace ContentBloom.Util.Tridion
             }
             return result;
         }
+        public static string GetPublications(dynamic slots)
+        {
+            IdentifiableObjectData[] output = null;
+            bool publicationTypeList = false;
+            if (slots is null)
+            {
+                output = CoreServiceClient.Client.GetSystemWideList(
+               new PublicationsFilterData
+               {
+               });
+
+            }
+            else
+            {
+                string slotValue = string.Format("{0}", slots["PublicationType"].value);
+               // publicationTypeList = slotValue.Contains("type");
+                TextInfo info = CultureInfo.CurrentCulture.TextInfo;
+                string publicationType = info.ToTitleCase(slotValue);
+                
+                output = CoreServiceClient.Client.GetSystemWideList(
+                    new PublicationsFilterData
+                    {
+                        PublicationTypeName = publicationType
+                    });
+            }
+            string result = "";
+            //if (output != null && publicationTypeList)
+            //    {
+            //        result = string.Join(",", output.Select(x => x.PublicationType.ToArray());
+            //    }
+            //else
+            //{
+                result = string.Join(",", output.Select(x => x.Title).ToArray());
+         //   }
+            
+            return result;
+        }
+       
     }
 }

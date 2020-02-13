@@ -22,5 +22,22 @@ namespace AlexaSkill.Controllers
             }
             return res;
         }
+        [HttpGet, Route("api/alexa/getpublcations")]
+        public AlexaResponse GetPublications(AlexaRequest request)
+        {
+            AlexaResponse res;
+            RequestHandler handler = new RequestHandler();
+               
+            switch (request.Request.Intent.Name)
+            {
+                case "GetPublicationList":
+                    res = handler.GetPublicationListHandler(request.Request.Intent.Slots);
+                    break;
+                default:
+                    res = handler.GetPublicationListHandler(null);
+                    break;
+            }
+            return res;
+        }
     }
 }
