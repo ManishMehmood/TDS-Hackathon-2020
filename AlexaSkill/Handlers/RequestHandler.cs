@@ -41,8 +41,13 @@ namespace AlexaSkill.Handlers
         /// <returns>Alexa Response</returns>
         public AlexaResponse GetPublicationListHandler(dynamic slots)
         {
+            string slotval = "";
+            if (slots!=null)
+            {
+                 slotval = string.Format("{0}", slots["PublicationType"].value);
+            }
             string result = CoreServiceHelper.GetPublications(slots);
-            result = string.IsNullOrEmpty(result) ? publicationNotFound : string.Format("Here is the list of publications {0}",result);
+            result = string.IsNullOrEmpty(result) ? publicationNotFound+" "+"with the name "+slotval : string.Format("Here is the list of publications {0}",result);
             var response = new AlexaResponse(result, false);
             response.Response.ShouldEndSession = false;
             return response;
