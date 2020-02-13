@@ -22,7 +22,7 @@ namespace AlexaSkill.Controllers
             }
             return res;
         }
-        [HttpGet, Route("api/alexa/getpublcations")]
+        [HttpPost, Route("api/alexa/getpublcations")]
         public AlexaResponse GetPublications(AlexaRequest request)
         {
             AlexaResponse res;
