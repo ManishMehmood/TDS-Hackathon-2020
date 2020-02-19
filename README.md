@@ -10,3 +10,7 @@ How to run:
 -Add dll Tridion.ContentManager.CoreService.Client.dll
 
 -Compile the project.
+
+Find documentation here - 
+https://manishmehmood.wordpress.com/2020/02/06/voice-based-interaction-with-tridion/
+https://manishmehmood.wordpress.com/2020/02/11/voice-based-interaction-with-tridion-part-2/
